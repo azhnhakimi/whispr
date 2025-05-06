@@ -1,20 +1,114 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "react-native";
+import { useFonts } from "expo-font";
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import * as SplashScreen from "expo-splash-screen";
+
+// import icons
+import Entypo from "@expo/vector-icons/Entypo";
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+
+// import screens
+import NoteListScreen from "./screens/NoteListScreen";
+import NoteEditorScreen from "./screens/NoteEditorScreen";
+import FolderListScreen from "./screens/FolderListScreen";
+import LabelListScreen from "./screens/LabelListScreen";
+import GlobalSearchScreen from "./screens/GlobalSearchScreen";
+import { useEffect, useState } from "react";
+
+// import components
+import CustomHeader from "./components/CustomHeader";
+
+const BottomTab = createBottomTabNavigator();
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+	StatusBar.setBackgroundColor("#000000", true);
+	StatusBar.setBarStyle("light-content", true);
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+	const [fontsLoaded] = useFonts({
+		AndikaRegular: require("./assets/fonts/AndikaRegular.ttf"),
+	});
+
+	const [isAppReady, setIsAppReady] = useState(false);
+
+	useEffect(() => {
+		if (fontsLoaded) {
+			setIsAppReady(true);
+			SplashScreen.hideAsync(); // fix the splashscreen
+		}
+	}, [fontsLoaded]);
+
+	if (!isAppReady) {
+		return null; // add spinning placeholder here
+	}
+
+	return (
+		<NavigationContainer>
+			<BottomTab.Navigator
+				initialRouteName="Home"
+				screenOptions={({ route, navigation, theme }) => {
+					return {
+						tabBarActiveTintColor: "#8B34E1",
+						freezeOnBlur: true,
+						tabBarIcon: ({ focused, color, size }) => {
+							if (route.name === "Home") {
+								return (
+									<Entypo
+										name="home"
+										size={size}
+										color={color}
+									/>
+								);
+							} else if (route.name === "Folders") {
+								return (
+									<FontAwesome
+										name="folder"
+										size={size}
+										color={color}
+									/>
+								);
+							} else if (route.name === "Labels") {
+								return (
+									<MaterialIcons
+										name="label"
+										size={size}
+										color={color}
+									/>
+								);
+							} else if (route.name === "Search") {
+								return (
+									<FontAwesome
+										name="search"
+										size={size}
+										color={color}
+									/>
+								);
+							} else {
+								return (
+									<FontAwesome
+										name="square"
+										size={size}
+										color={color}
+									/>
+								);
+							}
+						},
+						animation: "shift",
+						header: ({ navigation, route, options }) => {
+							return <CustomHeader routeName={route.name} />;
+						},
+					};
+				}}
+			>
+				<BottomTab.Screen name="Home" component={NoteListScreen} />
+				<BottomTab.Screen name="Folders" component={FolderListScreen} />
+				<BottomTab.Screen name="Labels" component={LabelListScreen} />
+				<BottomTab.Screen
+					name="Search"
+					component={GlobalSearchScreen}
+				/>
+			</BottomTab.Navigator>
+		</NavigationContainer>
+	);
+}
