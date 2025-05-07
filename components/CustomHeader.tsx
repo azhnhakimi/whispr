@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
 			Platform.OS === "android" ? (StatusBar.currentHeight ?? 0) + 10 : 0,
 		paddingLeft: 10,
 		paddingRight: 10,
+		paddingBottom: 5,
 	},
 	text: {
 		color: "#000",
