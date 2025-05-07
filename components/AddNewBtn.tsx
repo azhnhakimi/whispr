@@ -1,14 +1,24 @@
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import {
+	View,
+	Text,
+	StyleSheet,
+	Pressable,
+	GestureResponderEvent,
+} from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-const AddNewBtn = () => {
+const AddNewBtn = ({
+	onPress,
+}: {
+	onPress: (event: GestureResponderEvent) => void;
+}) => {
 	return (
 		<Pressable
 			style={({ pressed }) => [
 				styles.container,
 				{ backgroundColor: pressed ? "#782EC0" : "#8B34E1" },
 			]}
-			onPress={() => console.log("Add New Pressed")}
+			onPress={onPress}
 		>
 			<AntDesign name="plus" size={24} color="white" />
 			<Text style={styles.text}>Add New</Text>

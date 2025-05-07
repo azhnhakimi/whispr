@@ -1,8 +1,11 @@
-import { StatusBar } from "react-native";
+import { StatusBar, Platform } from "react-native";
 import { useFonts } from "expo-font";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
+
+import { RootStackParamList, BottomTabParamList } from "./types";
 
 // import icons
 import Entypo from "@expo/vector-icons/Entypo";
@@ -19,8 +22,72 @@ import { useEffect, useState } from "react";
 
 // import components
 import CustomHeader from "./components/CustomHeader";
+import BackBtnHeader from "./components/BackBtnHeader";
 
-const BottomTab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator<RootStackParamList>();
+const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+
+function BottomTabs() {
+	return (
+		<BottomTab.Navigator
+			initialRouteName="Home"
+			screenOptions={({ route, navigation, theme }) => {
+				return {
+					tabBarActiveTintColor: "#8B34E1",
+					freezeOnBlur: true,
+					tabBarIcon: ({ focused, color, size }) => {
+						if (route.name === "Home") {
+							return (
+								<Entypo name="home" size={size} color={color} />
+							);
+						} else if (route.name === "Folders") {
+							return (
+								<FontAwesome
+									name="folder"
+									size={size}
+									color={color}
+								/>
+							);
+						} else if (route.name === "Labels") {
+							return (
+								<MaterialIcons
+									name="label"
+									size={size}
+									color={color}
+								/>
+							);
+						} else if (route.name === "Search") {
+							return (
+								<FontAwesome
+									name="search"
+									size={size}
+									color={color}
+								/>
+							);
+						} else {
+							return (
+								<FontAwesome
+									name="square"
+									size={size}
+									color={color}
+								/>
+							);
+						}
+					},
+					animation: "shift",
+					header: ({ navigation, route, options }) => {
+						return <CustomHeader routeName={route.name} />;
+					},
+				};
+			}}
+		>
+			<BottomTab.Screen name="Home" component={NoteListScreen} />
+			<BottomTab.Screen name="Folders" component={FolderListScreen} />
+			<BottomTab.Screen name="Labels" component={LabelListScreen} />
+			<BottomTab.Screen name="Search" component={GlobalSearchScreen} />
+		</BottomTab.Navigator>
+	);
+}
 
 export default function App() {
 	StatusBar.setBackgroundColor("#000000", true);
@@ -28,6 +95,7 @@ export default function App() {
 
 	const [fontsLoaded] = useFonts({
 		AndikaRegular: require("./assets/fonts/AndikaRegular.ttf"),
+		RobotoRegular: require("./assets/fonts/RobotoRegular.ttf"),
 	});
 
 	const [isAppReady, setIsAppReady] = useState(false);
@@ -45,70 +113,17 @@ export default function App() {
 
 	return (
 		<NavigationContainer>
-			<BottomTab.Navigator
-				initialRouteName="Home"
-				screenOptions={({ route, navigation, theme }) => {
-					return {
-						tabBarActiveTintColor: "#8B34E1",
-						freezeOnBlur: true,
-						tabBarIcon: ({ focused, color, size }) => {
-							if (route.name === "Home") {
-								return (
-									<Entypo
-										name="home"
-										size={size}
-										color={color}
-									/>
-								);
-							} else if (route.name === "Folders") {
-								return (
-									<FontAwesome
-										name="folder"
-										size={size}
-										color={color}
-									/>
-								);
-							} else if (route.name === "Labels") {
-								return (
-									<MaterialIcons
-										name="label"
-										size={size}
-										color={color}
-									/>
-								);
-							} else if (route.name === "Search") {
-								return (
-									<FontAwesome
-										name="search"
-										size={size}
-										color={color}
-									/>
-								);
-							} else {
-								return (
-									<FontAwesome
-										name="square"
-										size={size}
-										color={color}
-									/>
-								);
-							}
-						},
-						animation: "shift",
-						header: ({ navigation, route, options }) => {
-							return <CustomHeader routeName={route.name} />;
-						},
-					};
-				}}
-			>
-				<BottomTab.Screen name="Home" component={NoteListScreen} />
-				<BottomTab.Screen name="Folders" component={FolderListScreen} />
-				<BottomTab.Screen name="Labels" component={LabelListScreen} />
-				<BottomTab.Screen
-					name="Search"
-					component={GlobalSearchScreen}
+			<Stack.Navigator screenOptions={{ headerShown: false }}>
+				<Stack.Screen name="BottomTabs" component={BottomTabs} />
+				<Stack.Screen
+					name="NoteEditorScreen"
+					component={NoteEditorScreen}
+					options={({ route, navigation }) => ({
+						headerShown: true,
+						header: () => <BackBtnHeader title={"Edit Note"} />,
+					})}
 				/>
-			</BottomTab.Navigator>
+			</Stack.Navigator>
 		</NavigationContainer>
 	);
 }

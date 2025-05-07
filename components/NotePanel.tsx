@@ -10,7 +10,7 @@ const NotePanel = () => {
 					<FontAwesome6 name="file-text" size={30} color="black" />
 					<View style={styles.subNoteDetails}>
 						<Text style={styles.noteNameText}>
-							Note Name FOLDER
+							Note Name [ FOLDER ]
 						</Text>
 						<Text style={styles.labelText}>Label</Text>
 					</View>

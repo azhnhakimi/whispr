@@ -1,10 +1,24 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 
+import SortBtn from "../components/SortBtn";
+import AddNewBtn from "../components/AddNewBtn";
+import FolderPanel from "../components/FolderPanel";
+
 const FolderListScreen = () => {
 	return (
 		<View style={styles.container}>
-			<Text>This is the FolderListScreen</Text>
+			<View style={styles.btnContainer}>
+				<SortBtn />
+				<AddNewBtn onPress={() => console.log("pressed")} />
+			</View>
+
+			<View>
+				<FolderPanel />
+				<FolderPanel />
+				<FolderPanel />
+				<FolderPanel />
+			</View>
 		</View>
 	);
 };
@@ -14,7 +28,15 @@ const styles = StyleSheet.create({
 		flex: 1,
 		backgroundColor: "#F0ECF5",
 		alignItems: "center",
-		justifyContent: "center",
+		justifyContent: "flex-start",
+		gap: 30,
+	},
+	btnContainer: {
+		width: "100%",
+		flexDirection: "row",
+		justifyContent: "flex-start",
+		gap: 10,
+		paddingLeft: 10,
 	},
 });
 
