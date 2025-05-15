@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
-const SaveBtn = () => {
+const SaveBtn = ({ onPress }) => {
 	return (
 		<Pressable
 			style={({ pressed }) => [
 				styles.container,
 				{ backgroundColor: pressed ? "#511E83" : "#782EC0" },
 			]}
+			onPress={onPress}
 		>
 			<Text style={styles.text}>Save</Text>
 		</Pressable>

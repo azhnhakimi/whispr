@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 const SIZE = 27;
 
-const BackBtnHeader = (props: any) => {
+const BackBtnHeader = (props) => {
 	const navigation = useNavigation();
 
 	return (

@@ -4,7 +4,7 @@ import Feather from "@expo/vector-icons/Feather";
 
 const SIZE = 25;
 
-const CustomHeader = (props: any) => {
+const CustomHeader = (props) => {
 	return (
 		<View style={styles.container}>
 			<FontAwesome6 name="circle-user" size={SIZE} color="black" />

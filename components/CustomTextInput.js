@@ -1,11 +1,6 @@
 import { View, Text, StyleSheet, TextInput } from "react-native";
 
-type CustomTextInputProps = {
-	height: number;
-	placeholder: string;
-};
-
-const CustomTextInput = ({ height, placeholder }: CustomTextInputProps) => {
+const CustomTextInput = ({ height, placeholder, value, onChange }) => {
 	return (
 		<View style={[styles.container, { height: height }]}>
 			<TextInput
@@ -13,6 +8,8 @@ const CustomTextInput = ({ height, placeholder }: CustomTextInputProps) => {
 				autoComplete="off"
 				multiline
 				placeholder={placeholder}
+				value={value}
+				onChangeText={onChange}
 			/>
 		</View>
 	);

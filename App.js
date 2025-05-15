@@ -5,12 +5,11 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import * as SplashScreen from "expo-splash-screen";
 
-import { RootStackParamList, BottomTabParamList } from "./types";
-
 // import icons
 import Entypo from "@expo/vector-icons/Entypo";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import FlashMessage from "react-native-flash-message";
 
 // import screens
 import NoteListScreen from "./screens/NoteListScreen";
@@ -18,14 +17,18 @@ import NoteEditorScreen from "./screens/NoteEditorScreen";
 import FolderListScreen from "./screens/FolderListScreen";
 import LabelListScreen from "./screens/LabelListScreen";
 import GlobalSearchScreen from "./screens/GlobalSearchScreen";
+import NewFolderScreen from "./screens/NewFolderScreen";
+
 import { useEffect, useState } from "react";
 
 // import components
 import CustomHeader from "./components/CustomHeader";
 import BackBtnHeader from "./components/BackBtnHeader";
 
-const Stack = createNativeStackNavigator<RootStackParamList>();
-const BottomTab = createBottomTabNavigator<BottomTabParamList>();
+import { MenuProvider } from "react-native-popup-menu";
+
+const Stack = createNativeStackNavigator();
+const BottomTab = createBottomTabNavigator();
 
 function BottomTabs() {
 	return (
@@ -112,18 +115,31 @@ export default function App() {
 	}
 
 	return (
-		<NavigationContainer>
-			<Stack.Navigator screenOptions={{ headerShown: false }}>
-				<Stack.Screen name="BottomTabs" component={BottomTabs} />
-				<Stack.Screen
-					name="NoteEditorScreen"
-					component={NoteEditorScreen}
-					options={({ route, navigation }) => ({
-						headerShown: true,
-						header: () => <BackBtnHeader title={"Edit Note"} />,
-					})}
-				/>
-			</Stack.Navigator>
-		</NavigationContainer>
+		<MenuProvider>
+			<NavigationContainer>
+				<Stack.Navigator screenOptions={{ headerShown: false }}>
+					<Stack.Screen name="BottomTabs" component={BottomTabs} />
+					<Stack.Screen
+						name="NoteEditorScreen"
+						component={NoteEditorScreen}
+						options={({ route, navigation }) => ({
+							headerShown: true,
+							header: () => <BackBtnHeader title={"Edit Note"} />,
+						})}
+					/>
+					<Stack.Screen
+						name="NewFolderScreen"
+						component={NewFolderScreen}
+						options={({ route, navigation }) => ({
+							headerShown: true,
+							header: () => (
+								<BackBtnHeader title={"Create Folde"} />
+							),
+						})}
+					/>
+				</Stack.Navigator>
+			</NavigationContainer>
+			<FlashMessage position="top" />
+		</MenuProvider>
 	);
 }

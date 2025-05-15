@@ -5,12 +5,22 @@ import SortBtn from "../components/SortBtn";
 import AddNewBtn from "../components/AddNewBtn";
 import FolderPanel from "../components/FolderPanel";
 
+import { useNavigation } from "@react-navigation/native";
+
 const FolderListScreen = () => {
+	const navigation = useNavigation();
+
+	const addNewBtn = () => {
+		console.log("new folder");
+
+		navigation.navigate("NewFolderScreen");
+	};
+
 	return (
 		<View style={styles.container}>
 			<View style={styles.btnContainer}>
 				<SortBtn />
-				<AddNewBtn onPress={() => console.log("pressed")} />
+				<AddNewBtn onPress={addNewBtn} />
 			</View>
 
 			<View>

@@ -7,11 +7,7 @@ import {
 } from "react-native";
 import AntDesign from "@expo/vector-icons/AntDesign";
 
-const AddNewBtn = ({
-	onPress,
-}: {
-	onPress: (event: GestureResponderEvent) => void;
-}) => {
+const AddNewBtn = ({ onPress }) => {
 	return (
 		<Pressable
 			style={({ pressed }) => [
